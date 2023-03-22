@@ -1,0 +1,44 @@
+grid options:
+https://github.com/sealninja/react-grid-system
+https://github.com/roylee0704/react-flexbox-grid
+https://github.com/react-grid-layout/react-grid-layout
+
+emoji sets:
+🐛🦋🐞🐜
+🌙🌠🪐🌌
+♥️💗💘🤍
+🌞🌻
+🍁🌿🌸🍄🌱🌻🌺🍃
+(from gpt-4)
+🐸🍉🚀🍕🌟🦄🎸🌈
+🎨🎉🚀🐢🍩🌟🌴🦁🌈🌊💡🌠
+🏳️‍🌈👨‍👩‍👧‍👦👩‍❤️‍👩👨‍🚒🧑‍🦽🧑‍🦯🇺🇸🏴‍☠️🏴󠁧󠁢󠁥󠁮󠁧󠁿🏳️‍⚧️👩‍❤️‍💋‍👩👨‍❤️‍💋‍👨
+♈️♉️♊️♋️♌️♍️♎️♏️♐️♑️♒️♓️
+
+WHAT THE PEOPLE WANT
+Show Up Club:
+Single input to accept arbitrary amount of emoji **DONE**
+Saving customizations (+ sharing b/c why not) **WON'T DO**
+Control emoji margins **DONE** / skewness **DONE** / angle **DONE**
+
+GYG:
+Arbitrary number of emojis **DONE**
+Emoji in rows vs. columns **DONE**
+
+Me:
+Solid + gradient color background **DONE**
+Resize wallpaper to fit within page **DONE**
+Programmatically handle emoji count + image padding based on parameter changes **DONE**
+Save as image **DONE**
+About info **DONE**
+Buy Me A Coffee setup **DONE**
+Website info **DONE**
+Recall tab state on tab switch + return **DONE**
+Desktop-friendly emoji addition **DONE**
+Add support for skin tone **DONE**
+Fix color opacity bug **DONE**
+Fix astrological emoji bug **WILL NOT FIX**
+Make it look good in safari **WILL NOT DO**
+Create + style advert image
+Add meta tags
+Push to github
