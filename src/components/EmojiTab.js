@@ -74,13 +74,11 @@ export const EmojiTab = ({
 
   function validateEmoji(text) {
     // Regular expression for matching emojis and Emoji ZWJ Sequences
-    console.log('validateEmoji text:', text);
     let emojiArray = [];
     let emojiCount = 0;
     const regex = emojiRegex();
     for (const match of text.matchAll(regex)) {
       const emoji = match[0];
-      console.log('found emoji:', emoji);
       emojiArray.push(emoji);
       emojiCount += 1;
       if (emojiCount === 12) {
@@ -88,7 +86,6 @@ export const EmojiTab = ({
       }
     }
     if (emojiArray.length > 0) {
-      console.log("emojiArray is", emojiArray);
       return emojiArray;
     } else {
       return undefined;
@@ -113,7 +110,6 @@ export const EmojiTab = ({
               ) {
                 emojiChar += "\uFE0F";
               }
-              console.log('emojichar is', emojiChar);
               return emojiChar;
             }
           }
@@ -135,11 +131,8 @@ export const EmojiTab = ({
 
   const handleCustomEmoji = (event) => {
     const { value, selectionStart } = event.target;
-    console.log("event", event);
     const prevCursorPosition = selectionStart;
     if (value === "") {
-      console.log("value is", value);
-      console.log("value is empty?");
       setEmoji([
         undefined,
         undefined,
@@ -156,13 +149,11 @@ export const EmojiTab = ({
       ]);
     } else {
       const validatedEmojis = validateEmoji(value);
-      console.log("validatedEmojis", validatedEmojis);
       // Create a new array with the validatedEmojis values and fill the rest of the array with undefined
       const updatedEmojis = [
         ...validatedEmojis,
         ...Array(12 - validatedEmojis.length).fill(undefined),
       ];
-      console.log("updatedEmojis:", updatedEmojis);
 
       setEmoji(updatedEmojis);
     }
@@ -180,12 +171,9 @@ export const EmojiTab = ({
     setOpenModal(false);
   };
 
-  console.log("here");
-
   useEffect(() => {
     const fetchInitialEmojiString = async () => {
       const emojiStr = await emojiString(emoji);
-      console.log("Initial Emoji String:", emojiStr);
       setEmojiDisplay(emojiStr);
     };
 
@@ -202,7 +190,6 @@ export const EmojiTab = ({
   useEffect(() => {
     (async () => {
       const emojiStr = await emojiString(emoji);
-      console.log("Emoji String:", emojiStr);
 
       setEmojiDisplay(emojiStr);
     })();
@@ -301,7 +288,7 @@ export const EmojiTab = ({
                 />
               </IconButton>
             ),
-            sx: { width: "300px",  display: "flex", alignItems: "center" },
+            sx: { width: "300px", display: "flex", alignItems: "center" },
           }}
         />
       </Box>
@@ -352,7 +339,7 @@ export const EmojiTab = ({
               theme="auto"
               title="Select Emojis"
               onEmojiSelect={(emoji) => {
-                if(emoji.skin){
+                if (emoji.skin) {
                   setSkinTone(emoji.skin);
                 }
                 appendEmoji(emoji);

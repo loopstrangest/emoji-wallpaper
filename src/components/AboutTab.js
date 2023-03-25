@@ -19,48 +19,74 @@ export const AboutTab = () => {
         borderRadius: "8px",
       }}
     >
-      <Box sx={{ width: "100%", display:"flex", justifyContent:"space-between", mb:1 }}>
+      <Typography sx={{ fontWeight: 700, mb: 1 }}>Creator links:</Typography>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          mb: 1,
+        }}
+      >
         <Link
           href="https://twitter.com/strangestloop"
           target="_blank"
           rel="noopener noreferrer"
-          sx={{color:"black", padding:"4px", borderRadius:"100px", width:"48px", height:"48px",
-           '&:hover': { outline: "2px solid black"},
+          sx={{
+            color: "black",
+            padding: "4px",
+            borderRadius: "100px",
+            width: "48px",
+            height: "48px",
+            "&:hover": { outline: "2px solid black" },
           }}
         >
-          <TwitterIcon sx={{fontSize: "48px"}}/>
+          <TwitterIcon sx={{ fontSize: "48px" }} />
         </Link>
         <Link
           href="mailto:loopstrangest@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
-          sx={{color:"black", padding:"4px", borderRadius:"100px", width:"48px", height:"48px",
-           '&:hover': { outline: "2px solid black"},
+          sx={{
+            color: "black",
+            padding: "4px",
+            borderRadius: "100px",
+            width: "48px",
+            height: "48px",
+            "&:hover": { outline: "2px solid black" },
           }}
         >
-          <MailIcon sx={{fontSize: "48px"}}/>
+          <MailIcon sx={{ fontSize: "48px" }} />
         </Link>
         <Link
           href="https://strangestloop.io"
           target="_blank"
           rel="noopener noreferrer"
-          sx={{color:"black", padding:"4px", borderRadius:"100px", width:"48px", height:"48px",
-           '&:hover': { outline: "2px solid black"},
+          sx={{
+            color: "black",
+            padding: "4px",
+            borderRadius: "100px",
+            width: "48px",
+            height: "48px",
+            "&:hover": { outline: "2px solid black" },
           }}
         >
-          <HomeIcon sx={{fontSize: "48px"}}/>
+          <HomeIcon sx={{ fontSize: "48px" }} />
         </Link>
         <Link
           href="https://buymeacoffee.com/loopy"
           target="_blank"
           rel="noopener noreferrer"
-          sx={{color:"black", padding:"4px", borderRadius:"100px", width:"48px", height:"48px",
-           '&:hover': { outline: "2px solid black"},
+          sx={{
+            color: "black",
+            padding: "4px",
+            borderRadius: "100px",
+            width: "48px",
+            height: "48px",
+            "&:hover": { outline: "2px solid black" },
           }}
         >
-          
-          <img src="/images/bmc.png" width="30"/>
-      
+          <img src="/images/bmc.png" width="30" />
         </Link>
       </Box>
       <Box
@@ -74,7 +100,7 @@ export const AboutTab = () => {
         <Typography sx={{ width: "100%" }}>
           Emoji Wallpaper was created by an artist who codes.
           <br />
-          Feel free to tag him in wallpapers you share on Twitter :^)
+          Feel free to tag him in wallpapers you share on Twitter 🤗
         </Typography>
       </Box>
     </Box>

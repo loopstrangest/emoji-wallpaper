@@ -1,11 +1,29 @@
 import React, { useState } from "react";
-import { Button, Box, TextField } from "@mui/material";
+import { Button, Box, CircularProgress, TextField } from "@mui/material";
 import { downloadWallpaper } from "../functions/Export";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import CheckIcon from "@mui/icons-material/Check";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUserDimensions }) => {
+const theme = createTheme({
+  components: {
+    MuiCircularProgress: {
+      styleOverrides: {
+        colorPrimary: {
+          color: "#ffffff",
+        },
+      },
+    },
+  },
+});
 
+export const ExportTab = ({
+  presetExport,
+  setPresetExport,
+  userDimensions,
+  setUserDimensions,
+}) => {
   const downloadScaleFactor = 2;
 
   const handleDimensionChange = (e, dimension) => {
@@ -19,11 +37,45 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
   };
 
   const handleButtonClick = (dimensions, index) => {
-    setUserDimensions({ width: dimensions.width * downloadScaleFactor, height: dimensions.height * downloadScaleFactor });
+    setUserDimensions({
+      width: dimensions.width * downloadScaleFactor,
+      height: dimensions.height * downloadScaleFactor,
+    });
     setPresetExport(index);
   };
 
-  console.log('userDimensions:', userDimensions);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const download = async () => {
+    setIsLoading(true);
+
+    // Add a short delay before calling downloadWallpaper()
+    setTimeout(async () => {
+      await downloadWallpaper();
+
+      setIsLoading(false);
+      setIsCompleted(true);
+
+      setTimeout(() => {
+        setIsCompleted(false);
+      }, 500); // Duration for displaying the checkmark
+    }, 200); // Delay before executing downloadWallpaper()
+  };
+
+  const buttonContent = () => {
+    if (isLoading) {
+      return (
+        <ThemeProvider theme={theme}>
+          <CircularProgress color="primary" size={24} />
+        </ThemeProvider>
+      );
+    } else if (isCompleted) {
+      return <CheckIcon />;
+    } else {
+      return "Download";
+    }
+  };
 
   return (
     <Box
@@ -50,9 +102,9 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
             sx={{
               m: 0.5,
               color: "black",
-             
-              padding:"4px",
-          borderRadius:"8px",
+              textTransform: "none",
+              padding: "4px",
+              borderRadius: "8px",
               outline: presetExport === 1 ? "2px solid black" : "none",
               backgroundColor: presetExport === 1 ? "white" : "none",
             }}
@@ -71,8 +123,8 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
               m: 0.5,
               color: "black",
               textTransform: "none",
-              padding:"4px",
-          borderRadius:"8px",
+              padding: "4px",
+              borderRadius: "8px",
               outline: presetExport === 2 ? "2px solid black" : "none",
               backgroundColor: presetExport === 2 ? "white" : "none",
             }}
@@ -91,8 +143,8 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
               m: 0.5,
               color: "black",
               textTransform: "none",
-              padding:"4px",
-          borderRadius:"8px",
+              padding: "4px",
+              borderRadius: "8px",
               outline: presetExport === 3 ? "2px solid black" : "none",
               backgroundColor: presetExport === 3 ? "white" : "none",
             }}
@@ -107,8 +159,8 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
               m: 0.5,
               color: "black",
               textTransform: "none",
-              padding:"4px",
-          borderRadius:"8px",
+              padding: "4px",
+              borderRadius: "8px",
               outline: presetExport === 4 ? "2px solid black" : "none",
               backgroundColor: presetExport === 4 ? "white" : "none",
             }}
@@ -122,7 +174,11 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
           <TextField
             label="Width"
             type="number"
-            defaultValue={presetExport === null ? userDimensions.width / downloadScaleFactor : null}
+            defaultValue={
+              presetExport === null
+                ? userDimensions.width / downloadScaleFactor
+                : null
+            }
             sx={{ width: "100px", mx: 0.5 }}
             InputProps={{ inputProps: { min: 24, max: 5000, step: 1 } }}
             onChange={(e) => handleDimensionChange(e, "width")}
@@ -130,7 +186,11 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
           <TextField
             label="Height"
             type="number"
-            defaultValue={presetExport === null ? userDimensions.height / downloadScaleFactor : null}
+            defaultValue={
+              presetExport === null
+                ? userDimensions.height / downloadScaleFactor
+                : null
+            }
             sx={{ width: "100px", mx: 0.5 }}
             InputProps={{ inputProps: { min: 24, max: 5000, step: 1 } }}
             onChange={(e) => handleDimensionChange(e, "height")}
@@ -139,14 +199,20 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
       </Box>
       <Button
         variant="contained"
-        sx={{ mt: 2, backgroundColor:"black", 
-        '&:hover, &:active': {
+        sx={{
+          mt: 2,
+          mb: 1,
+          textTransform: "none",
           backgroundColor: "black",
-          color:"white",
-        } }}
-        onClick={() => downloadWallpaper()}
+          "&:hover, &:active": {
+            backgroundColor: "black",
+            color: "white",
+          },
+        }}
+        onClick={download}
+        disabled={isLoading}
       >
-        Download
+        {buttonContent()}
       </Button>
     </Box>
   );

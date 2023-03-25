@@ -65,7 +65,6 @@ export const EmojiPicker = () => {
       emojiSpan.style.height = size;
       emojiSpan.style.width = size;
     });
-    console.log("set emoji spans to", size);
     const emojis = document.querySelectorAll("em-emoji span img");
     emojis.forEach((emoji) => {
       emoji.style.maxHeight = size;
@@ -73,13 +72,12 @@ export const EmojiPicker = () => {
       emoji.style.height = size;
       emoji.style.width = size;
     });
-  }  
-    setEmojiImgSize(`${emojiSize}px`);
+  }
+  setEmojiImgSize(`${emojiSize}px`);
 
   document.body.style.overflow = "hidden";
 
   const handlePageResize = () => {
-    console.log("resize dimensions");
     setDimensions({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -105,24 +103,10 @@ export const EmojiPicker = () => {
     containerWidth,
     containerHeight
   ) {
-    console.log(
-      "child:\n",
-      childWidth,
-      childHeight,
-      "\ncontainer:\n",
-      containerWidth,
-      containerHeight
-    );
     // Calculate the scale factor required to fit the child element inside the container
     const widthScale = containerWidth / childWidth;
     const heightScale = containerHeight / childHeight;
     const displayScaleFactor = Math.min(widthScale, heightScale);
-    console.log(`scale(${displayScaleFactor})`);
-    console.log(
-      "display dimensions:\n",
-      childWidth * displayScaleFactor,
-      childHeight * displayScaleFactor
-    );
     if (displayScaleFactor >= 1) {
       setTransform("");
       return;
@@ -148,9 +132,7 @@ export const EmojiPicker = () => {
     window.addEventListener("resize", handlePageResize, false);
   }, []);
 
-  useEffect(() => {
-    console.log('skintone is', skinTone);
-  }, [skinTone]);
+  useEffect(() => {}, [skinTone]);
 
   useEffect(() => {
     const emojiElements = document.querySelectorAll("em-emoji span img");
@@ -162,9 +144,7 @@ export const EmojiPicker = () => {
     });
   }, [emojiCount]);
 
-  useEffect(() => {
-    console.log("emoji is", emoji);
-  }, [emoji]);
+  useEffect(() => {}, [emoji]);
 
   useEffect(() => {
     calculateEmojiCount();
@@ -197,8 +177,6 @@ export const EmojiPicker = () => {
         : "other"
     );
   }, [gradientDirection]); // <- add the count variable here
-
-  console.log("initial emoji", emoji);
 
   return (
     <Container
