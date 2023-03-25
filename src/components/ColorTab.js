@@ -1,6 +1,6 @@
 import { MuiColorInput } from "mui-color-input";
 import { Box, Button } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import EastIcon from "@mui/icons-material/East";
 import NorthIcon from "@mui/icons-material/North";
 import NorthEastIcon from "@mui/icons-material/NorthEast";

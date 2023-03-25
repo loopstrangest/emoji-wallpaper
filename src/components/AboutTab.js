@@ -2,6 +2,7 @@ import { Box, Link, Typography } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import HomeIcon from "@mui/icons-material/Home";
 import MailIcon from "@mui/icons-material/Mail";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 export const AboutTab = () => {
   return (
@@ -19,7 +20,6 @@ export const AboutTab = () => {
         borderRadius: "8px",
       }}
     >
-      <Typography sx={{ fontWeight: 700, mb: 1 }}>Creator links:</Typography>
       <Box
         sx={{
           width: "100%",
@@ -74,12 +74,27 @@ export const AboutTab = () => {
           <HomeIcon sx={{ fontSize: "48px" }} />
         </Link>
         <Link
-          href="https://buymeacoffee.com/loopy"
+          href="https://github.com/loopstrangest"
           target="_blank"
           rel="noopener noreferrer"
           sx={{
             color: "black",
             padding: "4px",
+            borderRadius: "100px",
+            width: "48px",
+            height: "48px",
+            "&:hover": { outline: "2px solid black" },
+          }}
+        >
+          <GitHubIcon sx={{ fontSize: "48px" }} />
+        </Link>
+        <Link
+          href="https://buymeacoffee.com/loopy"
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            color: "black",
+            padding: "6px",
             borderRadius: "100px",
             width: "48px",
             height: "48px",

@@ -310,7 +310,6 @@ export const EmojiPicker = () => {
               setEmoji={setEmoji}
               emojiDisplay={emojiDisplay}
               setEmojiDisplay={setEmojiDisplay}
-              skinTone={skinTone}
               setSkinTone={setSkinTone}
               initializeApp={initializeApp}
               setInitializeApp={setInitializeApp}

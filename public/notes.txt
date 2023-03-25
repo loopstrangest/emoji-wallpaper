@@ -43,4 +43,4 @@ Create + style advert image **DONE**
 Add meta tags **DONE**
 Push to github **DONE**
 Improve mobile download **DONE**
-Add loader + checkmark gif to download button
+Add loader + checkmark to download button **DONE**

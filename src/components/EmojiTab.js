@@ -3,7 +3,6 @@ import facebookData from "@emoji-mart/data/sets/14/facebook.json";
 import googleData from "@emoji-mart/data/sets/14/google.json";
 import nativeData from "@emoji-mart/data/sets/14/native.json";
 import twitterData from "@emoji-mart/data/sets/14/twitter.json";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import AppleIcon from "@mui/icons-material/Apple";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -13,7 +12,6 @@ import emojiRegex from "emoji-regex";
 import Picker from "@emoji-mart/react";
 import { Box, TextField } from "@mui/material";
 import { getEmojiDataFromNative } from "emoji-mart";
-import { skinToneProps } from "emoji-mart";
 import AddIcon from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -26,7 +24,6 @@ export const EmojiTab = ({
   setSetType,
   emojiDisplay,
   setEmojiDisplay,
-  skinTone,
   setSkinTone,
   initializeApp,
   setInitializeApp,
