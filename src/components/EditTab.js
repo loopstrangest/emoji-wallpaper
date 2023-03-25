@@ -11,6 +11,7 @@ import {
 export const EditTab = ({emojiSize, setEmojiSize, emojiMargin, setEmojiMargin, emojiRotation, setEmojiRotation, emojiSkew, setEmojiSkew, orientation, setOrientation}) => {
 
   document.body.style.overflow = "hidden";
+  const downloadScaleFactor = 2;
 
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
@@ -57,12 +58,12 @@ export const EditTab = ({emojiSize, setEmojiSize, emojiMargin, setEmojiMargin, e
   }
 
   const handleSizeChange = (event, newValue) => {
-    setEmojiSize(newValue);
-    setEmojiImgSize(`${newValue}px`);
+    setEmojiSize(newValue * downloadScaleFactor);
+    setEmojiImgSize(`${newValue * downloadScaleFactor}px`);
   };
 
   const handleMarginChange = (event, newValue) => {
-    setEmojiMargin(newValue);
+    setEmojiMargin(newValue * downloadScaleFactor);
   };
 
   function validateEmoji(text) {
@@ -91,8 +92,8 @@ export const EditTab = ({emojiSize, setEmojiSize, emojiMargin, setEmojiMargin, e
   <Typography sx={{ pl: "27px", pr: "16px" }}>Size</Typography>
   <Slider
     min={24}
-    max={96}
-    defaultValue={emojiSize}
+    max={120}
+    defaultValue={emojiSize / downloadScaleFactor}
     onChangeCommitted={handleSizeChange}
     aria-label="Emoji size slider"
     valueLabelDisplay="auto"
@@ -114,8 +115,8 @@ export const EditTab = ({emojiSize, setEmojiSize, emojiMargin, setEmojiMargin, e
   <Typography sx={{ pr: "16px" }}>Spacing</Typography>
   <Slider
     min={0}
-    max={48}
-    defaultValue={emojiMargin}
+    max={60}
+    defaultValue={emojiMargin / downloadScaleFactor}
     onChangeCommitted={handleMarginChange}
     aria-label="Emoji size slider"
     valueLabelDisplay="auto"

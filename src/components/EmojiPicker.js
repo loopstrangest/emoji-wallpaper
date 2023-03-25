@@ -31,8 +31,9 @@ export const EmojiPicker = () => {
     undefined,
     undefined,
   ]);
+  const downloadScaleFactor = 2;
   const [orientation, setOrientation] = useState("row");
-  const [emojiSize, setEmojiSize] = useState(64);
+  const [emojiSize, setEmojiSize] = useState(64 * downloadScaleFactor);
   const [emojiMargin, setEmojiMargin] = useState(0);
   const [emojiRotation, setEmojiRotation] = useState(0);
   const [emojiSkew, setEmojiSkew] = useState(0);
@@ -49,13 +50,31 @@ export const EmojiPicker = () => {
     height: 0,
   });
   const [userDimensions, setUserDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth * downloadScaleFactor,
+    height: window.innerHeight * downloadScaleFactor,
   });
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+
+  function setEmojiImgSize(size) {
+    const emojiSpans = document.querySelectorAll("em-emoji span");
+    emojiSpans.forEach((emojiSpan) => {
+      emojiSpan.style.display = "block";
+      emojiSpan.style.height = size;
+      emojiSpan.style.width = size;
+    });
+    console.log("set emoji spans to", size);
+    const emojis = document.querySelectorAll("em-emoji span img");
+    emojis.forEach((emoji) => {
+      emoji.style.maxHeight = size;
+      emoji.style.maxWidth = size;
+      emoji.style.height = size;
+      emoji.style.width = size;
+    });
+  }  
+    setEmojiImgSize(`${emojiSize}px`);
 
   document.body.style.overflow = "hidden";
 
@@ -76,19 +95,6 @@ export const EmojiPicker = () => {
     const widthPadding = (imageWidth - emojisPerRow * emojiSizeWithMargin) / 2;
     const heightPadding =
       (imageHeight - emojisPerColumn * emojiSizeWithMargin) / 2;
-    console.log("total emojiSizeWithMargin:", emojiSizeWithMargin);
-    console.log("total height:", imageHeight);
-    console.log("total emoji height", emojisPerColumn * emojiSizeWithMargin);
-    console.log("heightPadding", heightPadding);
-    console.log(
-      "remainder",
-      imageHeight - emojisPerColumn * emojiSizeWithMargin
-    );
-    console.log("total width:", imageWidth);
-    console.log("total emoji width", emojisPerRow * emojiSizeWithMargin);
-    console.log("widthPadding", widthPadding);
-
-    console.log("remainder", imageWidth - emojisPerRow * emojiSizeWithMargin);
     setEmojiCount(emojisPerRow * emojisPerColumn);
     setImagePadding({ width: widthPadding, height: heightPadding });
   }

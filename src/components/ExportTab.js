@@ -6,20 +6,24 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 
 export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUserDimensions }) => {
 
+  const downloadScaleFactor = 2;
+
   const handleDimensionChange = (e, dimension) => {
     const value = parseInt(e.target.value) || 64;
     if (value === "" || value > 5000) return;
     setUserDimensions((prev) => ({
       ...prev,
-      [dimension]: value,
+      [dimension]: value * downloadScaleFactor,
     }));
     setPresetExport(null);
   };
 
   const handleButtonClick = (dimensions, index) => {
-    setUserDimensions({ width: dimensions.width, height: dimensions.height });
+    setUserDimensions({ width: dimensions.width * downloadScaleFactor, height: dimensions.height * downloadScaleFactor });
     setPresetExport(index);
   };
+
+  console.log('userDimensions:', userDimensions);
 
   return (
     <Box
@@ -118,7 +122,7 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
           <TextField
             label="Width"
             type="number"
-            defaultValue={presetExport === null ? userDimensions.width : null}
+            defaultValue={presetExport === null ? userDimensions.width / downloadScaleFactor : null}
             sx={{ width: "100px", mx: 0.5 }}
             InputProps={{ inputProps: { min: 24, max: 5000, step: 1 } }}
             onChange={(e) => handleDimensionChange(e, "width")}
@@ -126,7 +130,7 @@ export const ExportTab = ({ presetExport, setPresetExport, userDimensions, setUs
           <TextField
             label="Height"
             type="number"
-            defaultValue={presetExport === null ? userDimensions.height : null}
+            defaultValue={presetExport === null ? userDimensions.height / downloadScaleFactor : null}
             sx={{ width: "100px", mx: 0.5 }}
             InputProps={{ inputProps: { min: 24, max: 5000, step: 1 } }}
             onChange={(e) => handleDimensionChange(e, "height")}
