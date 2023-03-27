@@ -33,7 +33,7 @@ export const EmojiPicker = () => {
   ]);
   const downloadScaleFactor = 2;
   const [orientation, setOrientation] = useState("row");
-  const [emojiSize, setEmojiSize] = useState(64 * downloadScaleFactor);
+  const [emojiSize, setEmojiSize] = useState(40 * downloadScaleFactor);
   const [emojiMargin, setEmojiMargin] = useState(0);
   const [emojiRotation, setEmojiRotation] = useState(0);
   const [emojiSkew, setEmojiSkew] = useState(0);
