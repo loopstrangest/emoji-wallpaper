@@ -235,42 +235,50 @@ export const EmojiPicker = () => {
                   : color[0],
             }}
           >
-            {Array.from(Array(emojiCount)).map((_, index) => (
-              <Grid
-                item
-                key={JSON.stringify(emoji + index + skinTone)}
-                style={{
-                  width: emojiSize + "px",
-                  height: emojiSize + "px",
-                  maxWidth: emojiSize + "px",
-                  maxHeight: emojiSize + "px",
-                  margin: emojiMargin + "px",
-                  transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
-                }}
-              >
-                <Box
-                  sx={{
-                    width: emojiSize + "px",
-                    height: emojiSize + "px",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <em-emoji
-                    id={getEmojiById(index)}
-                    skin={skinTone.toString()}
-                    set={setType}
-                    size={emojiSize + "px"}
-                    style={{
-                      display: "block",
-                      fontSize: emojiSize + "px",
-                      width: emojiSize + "px",
-                      height: emojiSize + "px",
-                    }}
-                    key={index}
-                  />
-                </Box>
-              </Grid>
-            ))}
+       {Array.from(Array(emojiCount)).map((_, index) => (
+  <Grid
+    item
+    key={JSON.stringify(emoji + index + skinTone)}
+    style={{
+      position: "relative",
+      width: emojiSize + "px",
+      height: emojiSize + "px",
+      maxWidth: emojiSize + "px",
+      maxHeight: emojiSize + "px",
+      margin: emojiMargin + "px",
+      transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
+      outline: "0px solid red",
+    }}
+  >
+    <Box
+      sx={{
+        position: "relative",
+
+        width: emojiSize + "px",
+        height: emojiSize + "px",
+        flexWrap: "wrap",
+      }}
+    >
+      <p
+        id={getEmojiById(index)}
+        style={{
+          position: "absolute",
+          top:"-" + emojiSize*1.125 + "px",
+          display: "block",
+          fontSize: emojiSize + "px",
+          width: emojiSize + "px",
+          height: emojiSize + "px",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          outline: "0px solid green",
+        }}
+        key={index}
+      >{getEmojiById(index)}</p>
+    </Box>
+  </Grid>
+))}
+
           </Grid>
         </Box>
       </Box>

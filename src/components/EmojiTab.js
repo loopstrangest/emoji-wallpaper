@@ -206,6 +206,7 @@ export const EmojiTab = ({
         borderRadius: "8px",
       }}
     >
+      {/*
       <Box
         sx={{
           display: "flex",
@@ -258,6 +259,7 @@ export const EmojiTab = ({
           onClick={() => handleSetTypeChange("twitter")}
         />
       </Box>
+      */}
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <TextField
           label="Emojis (Max. 12)"
