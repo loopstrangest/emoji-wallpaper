@@ -14,6 +14,7 @@ import { Box, Container, Grid } from "@mui/material";
 
 export const EmojiPicker = () => {
   const [initializeApp, setInitializeApp] = useState(true);
+  const [emojiSystem, setEmojiSystem] = useState("manyTypes");
   const [setType, setSetType] = useState("apple");
   const [skinTone, setSkinTone] = useState(0);
   const [emojiDisplay, setEmojiDisplay] = useState("🌞🌻");
@@ -235,50 +236,65 @@ export const EmojiPicker = () => {
                   : color[0],
             }}
           >
-       {Array.from(Array(emojiCount)).map((_, index) => (
-  <Grid
-    item
-    key={JSON.stringify(emoji + index + skinTone)}
-    style={{
-      position: "relative",
-      width: emojiSize + "px",
-      height: emojiSize + "px",
-      maxWidth: emojiSize + "px",
-      maxHeight: emojiSize + "px",
-      margin: emojiMargin + "px",
-      transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
-      outline: "0px solid red",
-    }}
-  >
-    <Box
-      sx={{
-        position: "relative",
-
-        width: emojiSize + "px",
-        height: emojiSize + "px",
-        flexWrap: "wrap",
-      }}
-    >
-      <p
-        id={getEmojiById(index)}
-        style={{
-          position: "absolute",
-          top:"-" + emojiSize*1.125 + "px",
-          display: "block",
-          fontSize: emojiSize + "px",
-          width: emojiSize + "px",
-          height: emojiSize + "px",
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          outline: "0px solid green",
-        }}
-        key={index}
-      >{getEmojiById(index)}</p>
-    </Box>
-  </Grid>
-))}
-
+            {Array.from(Array(emojiCount)).map((_, index) => (
+              <Grid
+                item
+                key={JSON.stringify(emoji + index + skinTone)}
+                style={{
+                  position: "relative",
+                  width: emojiSize + "px",
+                  height: emojiSize + "px",
+                  maxWidth: emojiSize + "px",
+                  maxHeight: emojiSize + "px",
+                  margin: emojiMargin + "px",
+                  transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
+                  outline: "0px solid red",
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: emojiSize + "px",
+                    height: emojiSize + "px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {emojiSystem == "highResolution" ? (
+                    <p
+                      id={getEmojiById(index)}
+                      style={{
+                        position: "absolute",
+                        top: "-" + emojiSize * 1.125 + "px",
+                        display: "block",
+                        fontSize: emojiSize + "px",
+                        width: emojiSize + "px",
+                        height: emojiSize + "px",
+                        backgroundSize: "contain",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                      }}
+                      key={index}
+                    >
+                      {getEmojiById(index)}
+                    </p>
+                  ) : (
+                    <em-emoji
+                      id={getEmojiById(index)}
+                      skin={skinTone.toString()}
+                      set={setType}
+                      size={emojiSize + "px"}
+                      style={{
+                        display: "block",
+                        fontSize: emojiSize + "px",
+                        width: emojiSize + "px",
+                        height: emojiSize + "px",
+                      }}
+                      key={index}
+                    />
+                  )}
+                </Box>
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Box>
@@ -314,6 +330,8 @@ export const EmojiPicker = () => {
             <EmojiTab
               setType={setType}
               setSetType={setSetType}
+              emojiSystem={emojiSystem}
+              setEmojiSystem={setEmojiSystem}
               emoji={emoji}
               setEmoji={setEmoji}
               emojiDisplay={emojiDisplay}

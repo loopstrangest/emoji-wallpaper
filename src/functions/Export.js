@@ -46,10 +46,9 @@ export function downloadWallpaper() {
       ctx.drawImage(canvas, 0, 0, newCanvas.width, newCanvas.height);
       const dataUrl = newCanvas.toDataURL("image/png");
 
-      const isIOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      if (isIOS) {
+      if (isMobile) {
         // Create an additional canvas for mobile with the same aspect ratio as newCanvas
         const mobileCanvas = document.createElement("canvas");
         const mobileWidth = newCanvas.width / downloadScaleFactor; // Scale down the width and height

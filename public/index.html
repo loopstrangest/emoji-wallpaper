@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js" integrity="sha384-ICOlZarapRIX6UjKPcWKEpubjg7lGADN7Y9fYP4DU9zm0aPFhgnP5ef+XFaPyKv+" crossorigin="anonymous"></script>
     <meta property="og:image" content="https://strangestloop.io/images/emoji_wallpaper.png">
     <meta property="og:title" content="Emoji Wallpaper">
     <meta property="twitter:image" content="https://strangestloop.io/images/emoji_wallpaper.png">
@@ -48,7 +49,8 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="https://unpkg.com/twemoji@14.0.2/dist/twemoji.min.js" integrity="sha384-ICOlZarapRIX6UjKPcWKEpubjg7lGADN7Y9fYP4DU9zm0aPFhgnP5ef+XFaPyKv+" crossorigin="anonymous"></script>
-
+    <script>
+	    twemoji.parse(document.body)
+    </script>
   </body>
 </html>

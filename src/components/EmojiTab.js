@@ -10,7 +10,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import { useState, useEffect, useRef } from "react";
 import emojiRegex from "emoji-regex";
 import Picker from "@emoji-mart/react";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { getEmojiDataFromNative } from "emoji-mart";
 import AddIcon from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
@@ -20,6 +20,8 @@ import IconButton from "@mui/material/IconButton";
 export const EmojiTab = ({
   emoji,
   setEmoji,
+  emojiSystem,
+  setEmojiSystem,
   setType,
   setSetType,
   emojiDisplay,
@@ -206,7 +208,60 @@ export const EmojiTab = ({
         borderRadius: "8px",
       }}
     >
-      {/*
+      {emojiSystem == "manyTypes" && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 2,
+          }}
+        >
+          <AppleIcon
+            sx={{
+              ...emojiTypeStyles,
+              outline: setType === "apple" ? "2px solid black" : "none",
+              backgroundColor: setType === "apple" ? "white" : "none",
+              "&:hover": {
+                outline: "2px solid black",
+              },
+            }}
+            onClick={() => handleSetTypeChange("apple")}
+          />
+          <FacebookIcon
+            sx={{
+              ...emojiTypeStyles,
+              outline: setType === "facebook" ? "2px solid black" : "none",
+              backgroundColor: setType === "facebook" ? "white" : "none",
+              "&:hover": {
+                outline: "2px solid black",
+              },
+            }}
+            onClick={() => handleSetTypeChange("facebook")}
+          />
+          <GoogleIcon
+            sx={{
+              ...emojiTypeStyles,
+              outline: setType === "google" ? "2px solid black" : "none",
+              backgroundColor: setType === "google" ? "white" : "none",
+              "&:hover": {
+                outline: "2px solid black",
+              },
+            }}
+            onClick={() => handleSetTypeChange("google")}
+          />
+          <TwitterIcon
+            sx={{
+              ...emojiTypeStyles,
+              outline: setType === "twitter" ? "2px solid black" : "none",
+              backgroundColor: setType === "twitter" ? "white" : "none",
+              "&:hover": {
+                outline: "2px solid black",
+              },
+            }}
+            onClick={() => handleSetTypeChange("twitter")}
+          />
+        </Box>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -214,52 +269,41 @@ export const EmojiTab = ({
           mb: 2,
         }}
       >
-        <AppleIcon
+        <Button
           sx={{
-            ...emojiTypeStyles,
-            outline: setType === "apple" ? "2px solid black" : "none",
-            backgroundColor: setType === "apple" ? "white" : "none",
-            "&:hover": {
-              outline: "2px solid black",
-            },
+            mx: "8px",
+            padding: "4px",
+            borderRadius: "8px",
+            color: "black",
+            cursor: "pointer",
+            outline: emojiSystem === "manyTypes" ? "2px solid black" : "none",
+            backgroundColor: emojiSystem === "manyTypes" ? "white" : "none",
           }}
-          onClick={() => handleSetTypeChange("apple")}
-        />
-        <FacebookIcon
+          onClick={() => {
+            setEmojiSystem("manyTypes");
+          }}
+        >
+          Many Types
+        </Button>
+        <Button
           sx={{
-            ...emojiTypeStyles,
-            outline: setType === "facebook" ? "2px solid black" : "none",
-            backgroundColor: setType === "facebook" ? "white" : "none",
-            "&:hover": {
-              outline: "2px solid black",
-            },
+            mx: "8px",
+            padding: "4px",
+            borderRadius: "8px",
+            color: "black",
+            cursor: "pointer",
+            outline:
+              emojiSystem === "highResolution" ? "2px solid black" : "none",
+            backgroundColor:
+              emojiSystem === "highResolution" ? "white" : "none",
           }}
-          onClick={() => handleSetTypeChange("facebook")}
-        />
-        <GoogleIcon
-          sx={{
-            ...emojiTypeStyles,
-            outline: setType === "google" ? "2px solid black" : "none",
-            backgroundColor: setType === "google" ? "white" : "none",
-            "&:hover": {
-              outline: "2px solid black",
-            },
+          onClick={() => {
+            setEmojiSystem("highResolution");
           }}
-          onClick={() => handleSetTypeChange("google")}
-        />
-        <TwitterIcon
-          sx={{
-            ...emojiTypeStyles,
-            outline: setType === "twitter" ? "2px solid black" : "none",
-            backgroundColor: setType === "twitter" ? "white" : "none",
-            "&:hover": {
-              outline: "2px solid black",
-            },
-          }}
-          onClick={() => handleSetTypeChange("twitter")}
-        />
+        >
+          High-Res
+        </Button>
       </Box>
-      */}
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <TextField
           label="Emojis (Max. 12)"
