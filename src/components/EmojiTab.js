@@ -67,6 +67,7 @@ export const EmojiTab = ({
   }, []);
 
   const handleSetTypeChange = (newSetType) => {
+    localStorage.setItem("setType", newSetType);
     setSetType(newSetType);
     setEmojiData(dataList.find(([key]) => key === newSetType)[1]);
   };
@@ -132,7 +133,7 @@ export const EmojiTab = ({
     const { value, selectionStart } = event.target;
     const prevCursorPosition = selectionStart;
     if (value === "") {
-      setEmoji([
+      updateEmoji([
         undefined,
         undefined,
         undefined,
@@ -154,7 +155,7 @@ export const EmojiTab = ({
         ...Array(12 - validatedEmojis.length).fill(undefined),
       ];
 
-      setEmoji(updatedEmojis);
+      updateEmoji(updatedEmojis);
     }
     setTimeout(() => {
       inputRef.current.selectionStart = prevCursorPosition;
@@ -173,7 +174,7 @@ export const EmojiTab = ({
   useEffect(() => {
     const fetchInitialEmojiString = async () => {
       const emojiStr = await emojiString(emoji);
-      setEmojiDisplay(emojiStr);
+      updateEmojiDisplay(emojiStr);
     };
 
     fetchInitialEmojiString();
@@ -190,9 +191,29 @@ export const EmojiTab = ({
     (async () => {
       const emojiStr = await emojiString(emoji);
 
-      setEmojiDisplay(emojiStr);
+      updateEmojiDisplay(emojiStr);
     })();
   }, [emoji]);
+
+  const updateEmojiSystem = (newEmojiSystem) => {
+    setEmojiSystem(newEmojiSystem);
+    localStorage.setItem("emojiSystem", newEmojiSystem);
+  };
+
+  const updateSkinTone = (newSkinTone) => {
+    setSkinTone(newSkinTone);
+    localStorage.setItem("skinTone", newSkinTone);
+  };
+
+  const updateEmoji = (newEmoji) => {
+    setEmoji(newEmoji);
+    localStorage.setItem("emoji", JSON.stringify(newEmoji));
+  };
+
+  const updateEmojiDisplay = (newEmojiDisplay) => {
+    setEmojiDisplay(newEmojiDisplay);
+    localStorage.setItem("emojiDisplay", newEmojiDisplay);
+  };
 
   return (
     <Box
@@ -280,7 +301,7 @@ export const EmojiTab = ({
             backgroundColor: emojiSystem === "manyTypes" ? "white" : "none",
           }}
           onClick={() => {
-            setEmojiSystem("manyTypes");
+            updateEmojiSystem("manyTypes");
           }}
         >
           Many Types
@@ -298,7 +319,7 @@ export const EmojiTab = ({
               emojiSystem === "highResolution" ? "white" : "none",
           }}
           onClick={() => {
-            setEmojiSystem("highResolution");
+            updateEmojiSystem("highResolution");
           }}
         >
           High-Res
@@ -383,10 +404,10 @@ export const EmojiTab = ({
               title="Select Emojis"
               onEmojiSelect={(emoji) => {
                 if (emoji.skin) {
-                  setSkinTone(emoji.skin);
+                  updateSkinTone(emoji.skin);
                 }
                 appendEmoji(emoji);
-                setEmojiDisplay((display) => display + emoji.native);
+                updateEmojiDisplay((display) => display + emoji.native);
               }}
             />
           </Box>

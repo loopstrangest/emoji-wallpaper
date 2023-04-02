@@ -27,10 +27,12 @@ function showSaveInstructions() {
 export function downloadWallpaper() {
   const box = document.getElementById("emoji-wallpaper");
 
-  // Temporarily add the no-transform class to the element
-  box.classList.add("no-transform");
-
   return new Promise((resolve) => {
+    if (!box) {
+      resolve({ success: false });
+    }
+    // Temporarily add the no-transform class to the element
+    box.classList.add("no-transform");
     // Capture the element using html2canvas
     html2canvas(box, { useCORS: true }).then((canvas) => {
       // Remove the no-transform class from the element
@@ -98,7 +100,7 @@ export function downloadWallpaper() {
         imgContainer.addEventListener("click", () => {
           document.body.removeChild(imgContainer);
           document.body.removeChild(message);
-          resolve();
+          resolve({ success: true });
         });
       } else {
         const link = document.createElement("a");
@@ -107,7 +109,7 @@ export function downloadWallpaper() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        resolve();
+        resolve({ success: true });
       }
     });
   });

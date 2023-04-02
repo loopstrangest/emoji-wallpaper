@@ -23,10 +23,28 @@ export const ColorTab = ({
   const [showGradients, setShowGradients] = useState(false);
 
   const handleColorChange = (newColor) => {
-    setColor([newColor, color[1]]);
+    updateColor(newColor, 0);
   };
+
   const handleColor2Change = (newColor) => {
-    setColor([color[0], newColor]);
+    updateColor(newColor, 1);
+  };
+
+  const updateColor = (newColor, index) => {
+    const updatedColor = [...color];
+    updatedColor[index] = newColor;
+    setColor(updatedColor);
+    localStorage.setItem("color", JSON.stringify(updatedColor));
+  };
+
+  const updateColorStyle = (newColorStyle) => {
+    setColorStyle(newColorStyle);
+    localStorage.setItem("colorStyle", newColorStyle);
+  };
+
+  const updateGradientDirection = (newGradientDirection) => {
+    setGradientDirection(newGradientDirection);
+    localStorage.setItem("gradientDirection", newGradientDirection);
   };
 
   return (
@@ -62,7 +80,7 @@ export const ColorTab = ({
             backgroundColor: colorStyle === "solid" ? "white" : "none",
           }}
           onClick={() => {
-            setColorStyle("solid");
+            updateColorStyle("solid");
           }}
         >
           Solid
@@ -77,7 +95,7 @@ export const ColorTab = ({
             outline: colorStyle === "gradient" ? "2px solid black" : "none",
             backgroundColor: colorStyle === "gradient" ? "white" : "none",
           }}
-          onClick={() => setColorStyle("gradient")}
+          onClick={() => updateColorStyle("gradient")}
         >
           Gradient
         </Button>
@@ -123,61 +141,61 @@ export const ColorTab = ({
             >
               {gradientDirection !== "S" && (
                 <SouthIcon
-                  onClick={() => setGradientDirection("S")}
+                  onClick={() => updateGradientDirection("S")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "N" && (
                 <NorthIcon
-                  onClick={() => setGradientDirection("N")}
+                  onClick={() => updateGradientDirection("N")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "E" && (
                 <EastIcon
-                  onClick={() => setGradientDirection("E")}
+                  onClick={() => updateGradientDirection("E")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "W" && (
                 <WestIcon
-                  onClick={() => setGradientDirection("W")}
+                  onClick={() => updateGradientDirection("W")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "SE" && (
                 <SouthEastIcon
-                  onClick={() => setGradientDirection("SE")}
+                  onClick={() => updateGradientDirection("SE")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "SW" && (
                 <SouthWestIcon
-                  onClick={() => setGradientDirection("SW")}
+                  onClick={() => updateGradientDirection("SW")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "NE" && (
                 <NorthEastIcon
-                  onClick={() => setGradientDirection("NE")}
+                  onClick={() => updateGradientDirection("NE")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "NW" && (
                 <NorthWestIcon
-                  onClick={() => setGradientDirection("NW")}
+                  onClick={() => updateGradientDirection("NW")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "IN" && (
                 <ZoomInMapIcon
-                  onClick={() => setGradientDirection("IN")}
+                  onClick={() => updateGradientDirection("IN")}
                   sx={{ fontSize: "36px" }}
                 />
               )}
               {gradientDirection !== "OUT" && (
                 <ZoomOutMapIcon
-                  onClick={() => setGradientDirection("OUT")}
+                  onClick={() => updateGradientDirection("OUT")}
                   sx={{ fontSize: "36px" }}
                 />
               )}

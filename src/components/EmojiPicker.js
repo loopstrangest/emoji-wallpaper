@@ -9,72 +9,98 @@ import ConstructionIcon from "@mui/icons-material/Construction";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import InfoIcon from "@mui/icons-material/Info";
-import { useState, useEffect } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { useState, useEffect, useLayoutEffect } from "react";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 export const EmojiPicker = () => {
   const [initializeApp, setInitializeApp] = useState(true);
-  const [emojiSystem, setEmojiSystem] = useState("manyTypes");
-  const [setType, setSetType] = useState("apple");
-  const [skinTone, setSkinTone] = useState(0);
-  const [emojiDisplay, setEmojiDisplay] = useState("🌞🌻");
-  const [emoji, setEmoji] = useState([
-    "🌞",
-    "🌻",
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]);
+  const [emojiSystem, setEmojiSystem] = useState(
+    localStorage.getItem("emojiSystem") || "manyTypes"
+  );
+  const [setType, setSetType] = useState(
+    localStorage.getItem("setType") || "apple"
+  );
+  const [skinTone, setSkinTone] = useState(
+    localStorage.getItem("skinTone") || 0
+  );
+  const [emojiDisplay, setEmojiDisplay] = useState(
+    localStorage.getItem("emojiDisplay") || "🌞🌻"
+  );
+  const [emoji, setEmoji] = useState(
+    JSON.parse(localStorage.getItem("emoji")) || [
+      "🌞",
+      "🌻",
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  );
+
   const downloadScaleFactor = 2;
-  const [orientation, setOrientation] = useState("row");
-  const [emojiSize, setEmojiSize] = useState(40 * downloadScaleFactor);
-  const [emojiMargin, setEmojiMargin] = useState(0);
-  const [emojiRotation, setEmojiRotation] = useState(0);
-  const [emojiSkew, setEmojiSkew] = useState(0);
-  const [emojiCount, setEmojiCount] = useState(1000);
+
+  const convertToNumber = (input) => {
+    if (typeof input === "string") {
+      return parseInt(input, 10);
+    }
+    return input;
+  };
+
   const [tab, setTab] = useState("emoji");
-  const [color, setColor] = useState(["white", "white"]);
-  const [colorStyle, setColorStyle] = useState("solid");
-  const [gradientDirection, setGradientDirection] = useState("SE");
+
+  const [orientation, setOrientation] = useState(
+    localStorage.getItem("orientation") || "row"
+  );
+  const [emojiSize, setEmojiSize] = useState(
+    convertToNumber(localStorage.getItem("emojiSize")) ||
+      40 * downloadScaleFactor
+  );
+  const [emojiMargin, setEmojiMargin] = useState(
+    convertToNumber(localStorage.getItem("emojiMargin")) || 0
+  );
+  const [emojiRotation, setEmojiRotation] = useState(
+    localStorage.getItem("emojiRotation") || 0
+  );
+  const [emojiSkew, setEmojiSkew] = useState(
+    localStorage.getItem("emojiSkew") || 0
+  );
+  const [emojiCount, setEmojiCount] = useState(1000);
+  const [color, setColor] = useState(
+    JSON.parse(localStorage.getItem("color")) || ["white", "white"]
+  );
+  const [colorStyle, setColorStyle] = useState(
+    localStorage.getItem("colorStyle") || "solid"
+  );
+  const [gradientDirection, setGradientDirection] = useState(
+    localStorage.getItem("gradientDirection") || "SE"
+  );
   const [gradientCSS, setGradientCSS] = useState("to bottom right");
   const [transform, setTransform] = useState("none");
-  const [presetExport, setPresetExport] = useState(null);
+  const [presetExport, setPresetExport] = useState(
+    JSON.parse(localStorage.getItem("presetExport")) || null
+  );
   const [imagePadding, setImagePadding] = useState({
     width: 0,
     height: 0,
   });
-  const [userDimensions, setUserDimensions] = useState({
-    width: window.innerWidth * downloadScaleFactor,
-    height: window.innerHeight * downloadScaleFactor,
-  });
+  const [userDimensions, setUserDimensions] = useState(
+    JSON.parse(localStorage.getItem("userDimensions")) || {
+      width: window.innerWidth * downloadScaleFactor,
+      height: window.innerHeight * downloadScaleFactor,
+    }
+  );
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  function setEmojiImgSize(size) {
-    const emojiSpans = document.querySelectorAll("em-emoji span");
-    emojiSpans.forEach((emojiSpan) => {
-      emojiSpan.style.display = "block";
-      emojiSpan.style.height = size;
-      emojiSpan.style.width = size;
-    });
-    const emojis = document.querySelectorAll("em-emoji span img");
-    emojis.forEach((emoji) => {
-      emoji.style.maxHeight = size;
-      emoji.style.maxWidth = size;
-      emoji.style.height = size;
-      emoji.style.width = size;
-    });
-  }
-  setEmojiImgSize(`${emojiSize}px`);
+  const [imagesReady, setImagesReady] = useState(false);
 
   document.body.style.overflow = "hidden";
 
@@ -94,9 +120,37 @@ export const EmojiPicker = () => {
     const widthPadding = (imageWidth - emojisPerRow * emojiSizeWithMargin) / 2;
     const heightPadding =
       (imageHeight - emojisPerColumn * emojiSizeWithMargin) / 2;
+    console.log(
+      imageWidth,
+      imageHeight,
+      emojiSize,
+      emojiMargin,
+      emojiSizeWithMargin,
+      emojisPerRow,
+      emojisPerColumn
+    );
     setEmojiCount(emojisPerRow * emojisPerColumn);
     setImagePadding({ width: widthPadding, height: heightPadding });
   }
+
+  function setEmojiImgSize(size) {
+    console.log("size is", size);
+    const emojiSpans = document.querySelectorAll("em-emoji span");
+    emojiSpans.forEach((emojiSpan) => {
+      emojiSpan.style.display = "block";
+      emojiSpan.style.height = size;
+      emojiSpan.style.width = size;
+    });
+    const emojis = document.querySelectorAll("em-emoji span img");
+    emojis.forEach((emoji) => {
+      console.log("found emoji");
+      emoji.style.maxHeight = size;
+      emoji.style.maxWidth = size;
+      emoji.style.height = size;
+      emoji.style.width = size;
+    });
+  }
+  setEmojiImgSize(`${emojiSize}px`);
 
   function calculateTransform(
     childWidth,
@@ -133,6 +187,11 @@ export const EmojiPicker = () => {
     window.addEventListener("resize", handlePageResize, false);
   }, []);
 
+  useEffect(() => {
+    console.log("in set useffect");
+    setEmojiImgSize(`${emojiSize}px`);
+  }, []);
+
   useEffect(() => {}, [skinTone]);
 
   useEffect(() => {
@@ -140,12 +199,14 @@ export const EmojiPicker = () => {
     emojiElements.forEach((element) => {
       element.style.width = emojiSize + "px";
       element.style.height = emojiSize + "px";
-      //element.style.position = "absolute";
-      //element.style.top = "-" + emojiSize / 8 + "px";
     });
   }, [emojiCount]);
 
   useEffect(() => {}, [emoji]);
+
+  useEffect(() => {
+    console.log("emojiSize, emojiMargin is", emojiSize, emojiMargin);
+  }, [emojiSize, emojiMargin]);
 
   useEffect(() => {
     calculateEmojiCount();
@@ -156,6 +217,33 @@ export const EmojiPicker = () => {
       dimensions.height
     );
   }, [userDimensions, dimensions, emojiSize, emojiMargin]);
+
+  const initObserver = () => {
+    const targetNode = document.body;
+    const config = { childList: true, subtree: true };
+    const callback = (mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === "childList") {
+          const emojis = document.querySelectorAll("em-emoji span img");
+          if (emojis.length > 0) {
+            setImagesReady(true);
+          }
+        }
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+
+    return observer;
+  };
+
+  useEffect(() => {
+    const observer = initObserver();
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     setGradientCSS(
@@ -201,102 +289,122 @@ export const EmojiPicker = () => {
           alignItems: "center",
         }}
       >
-        <Box
-          id="emoji-wallpaper"
-          sx={{
-            display: "flex",
-            minWidth: userDimensions.width,
-            minHeight: userDimensions.height,
-            position: "relative",
-            height: userDimensions?.height,
-            width: userDimensions?.width,
-            transform: transform,
-            //transformOrigin: "center center",
-            zIndex: "0",
-            overflow: "hidden",
-          }}
-        >
-          <Grid
-            container
-            spacing={0}
-            direction={orientation}
-            alignContent="center"
-            style={{
-              paddingTop: orientation === "row" ? 0 : imagePadding.height,
-              paddingLeft: orientation === "column" ? 0 : imagePadding.width,
-              background:
-                colorStyle === "gradient" &&
-                gradientDirection !== "IN" &&
-                gradientDirection !== "OUT"
-                  ? `linear-gradient(${gradientCSS}, ${color[0]}, ${color[1]})`
-                  : colorStyle === "gradient" && gradientDirection === "OUT"
-                  ? `radial-gradient(${color[0]}, ${color[1]})`
-                  : colorStyle === "gradient" && gradientDirection === "IN"
-                  ? `radial-gradient(${color[1]}, ${color[0]})`
-                  : color[0],
+        {emojiCount <= 9000 ? (
+          <Box
+            id="emoji-wallpaper"
+            sx={{
+              display: "flex",
+              minWidth: userDimensions.width,
+              minHeight: userDimensions.height,
+              position: "relative",
+              height: userDimensions?.height,
+              width: userDimensions?.width,
+              transform: transform,
+              //transformOrigin: "center center",
+              zIndex: "0",
+              overflow: "hidden",
             }}
           >
-            {Array.from(Array(emojiCount)).map((_, index) => (
-              <Grid
-                item
-                key={JSON.stringify(emoji + index + skinTone)}
-                style={{
-                  position: "relative",
-                  width: emojiSize + "px",
-                  height: emojiSize + "px",
-                  maxWidth: emojiSize + "px",
-                  maxHeight: emojiSize + "px",
-                  margin: emojiMargin + "px",
-                  transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
-                  outline: "0px solid red",
-                }}
-              >
-                <Box
-                  sx={{
+            <Grid
+              container
+              spacing={0}
+              direction={orientation}
+              alignContent="center"
+              style={{
+                paddingTop: orientation === "row" ? 0 : imagePadding.height,
+                paddingLeft: orientation === "column" ? 0 : imagePadding.width,
+                background:
+                  colorStyle === "gradient" &&
+                  gradientDirection !== "IN" &&
+                  gradientDirection !== "OUT"
+                    ? `linear-gradient(${gradientCSS}, ${color[0]}, ${color[1]})`
+                    : colorStyle === "gradient" && gradientDirection === "OUT"
+                    ? `radial-gradient(${color[0]}, ${color[1]})`
+                    : colorStyle === "gradient" && gradientDirection === "IN"
+                    ? `radial-gradient(${color[1]}, ${color[0]})`
+                    : color[0],
+              }}
+            >
+              {Array.from(Array(emojiCount)).map((_, index) => (
+                <Grid
+                  item
+                  key={JSON.stringify(emoji + index + skinTone)}
+                  style={{
                     position: "relative",
                     width: emojiSize + "px",
                     height: emojiSize + "px",
-                    flexWrap: "wrap",
+                    maxWidth: emojiSize + "px",
+                    maxHeight: emojiSize + "px",
+                    margin: emojiMargin + "px",
+                    transform: `rotate(${emojiRotation}deg) skew(${emojiSkew}deg)`,
+                    outline: "0px solid red",
                   }}
                 >
-                  {emojiSystem == "highResolution" ? (
-                    <p
-                      id={getEmojiById(index)}
-                      style={{
-                        position: "absolute",
-                        top: "-" + emojiSize * 1.125 + "px",
-                        display: "block",
-                        fontSize: emojiSize + "px",
-                        width: emojiSize + "px",
-                        height: emojiSize + "px",
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                      }}
-                      key={index}
-                    >
-                      {getEmojiById(index)}
-                    </p>
-                  ) : (
-                    <em-emoji
-                      id={getEmojiById(index)}
-                      skin={skinTone.toString()}
-                      set={setType}
-                      size={emojiSize + "px"}
-                      style={{
-                        display: "block",
-                        fontSize: emojiSize + "px",
-                        width: emojiSize + "px",
-                        height: emojiSize + "px",
-                      }}
-                      key={index}
-                    />
-                  )}
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: emojiSize + "px",
+                      height: emojiSize + "px",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {emojiSystem == "highResolution" ? (
+                      <p
+                        id={getEmojiById(index)}
+                        style={{
+                          position: "absolute",
+                          top: "-" + emojiSize * 1.125 + "px",
+                          display: "block",
+                          fontSize: emojiSize + "px",
+                          width: emojiSize + "px",
+                          height: emojiSize + "px",
+                          backgroundSize: "contain",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                        }}
+                        key={index}
+                      >
+                        {getEmojiById(index)}
+                      </p>
+                    ) : (
+                      <em-emoji
+                        id={getEmojiById(index)}
+                        skin={skinTone.toString()}
+                        set={setType}
+                        size={emojiSize + "px"}
+                        style={{
+                          display: "block",
+                          fontSize: emojiSize + "px",
+                          width: emojiSize + "px",
+                          height: emojiSize + "px",
+                        }}
+                        key={index}
+                      />
+                    )}
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        ) : (
+          <Typography
+            sx={{
+              position: "absolute",
+              height: "auto",
+              width: "auto",
+              maxWidth: "90%",
+              margin: "auto",
+              padding: "8px",
+              top: "32.5%",
+              backgroundColor: "white",
+              borderRadius: "8px",
+              outline: "2px solid black",
+            }}
+          >
+            Too many emojis. Try increasing emoji size or spacing, or decreasing
+            wallpaper size.
+          </Typography>
+        )}
       </Box>
       <Box
         sx={{
@@ -351,8 +459,6 @@ export const EmojiPicker = () => {
               setEmojiRotation={setEmojiRotation}
               emojiSkew={emojiSkew}
               setEmojiSkew={setEmojiSkew}
-              imagePadding={imagePadding}
-              setImagePadding={setImagePadding}
               orientation={orientation}
               setOrientation={setOrientation}
               dimensions={dimensions}

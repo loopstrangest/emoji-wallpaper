@@ -42,7 +42,7 @@ export const EditTab = ({
   }, []);
 
   const handleOrientation = () => {
-    setOrientation(orientation === "row" ? "column" : "row");
+    updateOrientation(orientation === "row" ? "column" : "row");
   };
 
   function setEmojiImgSize(size) {
@@ -62,33 +62,38 @@ export const EditTab = ({
   }
 
   const handleSizeChange = (event, newValue) => {
-    setEmojiSize(newValue * downloadScaleFactor);
+    updateEmojiSize(newValue * downloadScaleFactor);
     setEmojiImgSize(`${newValue * downloadScaleFactor}px`);
   };
 
   const handleMarginChange = (event, newValue) => {
-    setEmojiMargin(newValue * downloadScaleFactor);
+    updateEmojiMargin(newValue * downloadScaleFactor);
   };
 
-  function validateEmoji(text) {
-    // Regular expression for matching emojis and Emoji ZWJ Sequences
-    let emojiArray = [];
-    let emojiCount = 0;
-    const regex = emojiRegex();
-    for (const match of text.matchAll(regex)) {
-      const emoji = match[0];
-      emojiArray.push(emoji);
-      emojiCount += 1;
-      if (emojiCount == 4) {
-        break;
-      }
-    }
-    if (emojiArray.length > 0) {
-      return emojiArray;
-    } else {
-      return undefined;
-    }
-  }
+  const updateEmojiSize = (newEmojiSize) => {
+    setEmojiSize(newEmojiSize);
+    localStorage.setItem("emojiSize", newEmojiSize);
+  };
+
+  const updateEmojiMargin = (newEmojiMargin) => {
+    setEmojiMargin(newEmojiMargin);
+    localStorage.setItem("emojiMargin", newEmojiMargin);
+  };
+
+  const updateEmojiRotation = (newEmojiRotation) => {
+    setEmojiRotation(newEmojiRotation);
+    localStorage.setItem("emojiRotation", newEmojiRotation);
+  };
+
+  const updateEmojiSkew = (newEmojiSkew) => {
+    setEmojiSkew(newEmojiSkew);
+    localStorage.setItem("emojiSkew", newEmojiSkew);
+  };
+
+  const updateOrientation = (newOrientation) => {
+    setOrientation(newOrientation);
+    localStorage.setItem("orientation", newOrientation);
+  };
 
   const sizeAndSpacingSliders = (
     <Box
@@ -125,7 +130,7 @@ export const EditTab = ({
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={{ pr: "16px" }}>Spacing</Typography>
         <Slider
-          min={0}
+          min={Math.floor(emojiSize / 8) * -1}
           max={60}
           defaultValue={emojiMargin / downloadScaleFactor}
           onChangeCommitted={handleMarginChange}
@@ -190,8 +195,8 @@ export const EditTab = ({
             defaultValue={emojiRotation}
             onChange={(e) => {
               e.target.value
-                ? setEmojiRotation(e.target.value)
-                : setEmojiRotation(0);
+                ? updateEmojiRotation(e.target.value)
+                : updateEmojiRotation(0);
             }}
             sx={{ width: "100px" }}
             InputLabelProps={{
@@ -205,7 +210,9 @@ export const EditTab = ({
             label="Skew"
             defaultValue={emojiSkew}
             onChange={(e) =>
-              e.target.value ? setEmojiSkew(e.target.value) : setEmojiSkew(0)
+              e.target.value
+                ? updateEmojiSkew(e.target.value)
+                : updateEmojiSkew(0)
             }
             sx={{ width: "100px" }}
             InputLabelProps={{

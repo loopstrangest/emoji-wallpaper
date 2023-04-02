@@ -4,6 +4,7 @@ import { downloadWallpaper } from "../functions/Export";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -29,37 +30,46 @@ export const ExportTab = ({
   const handleDimensionChange = (e, dimension) => {
     const value = parseInt(e.target.value) || 64;
     if (value === "" || value > 5000) return;
-    setUserDimensions((prev) => ({
+    updateUserDimensions((prev) => ({
       ...prev,
       [dimension]: value * downloadScaleFactor,
     }));
-    setPresetExport(null);
+    updatePresetExport(null);
   };
 
   const handleButtonClick = (dimensions, index) => {
-    setUserDimensions({
+    updateUserDimensions({
       width: dimensions.width * downloadScaleFactor,
       height: dimensions.height * downloadScaleFactor,
     });
-    setPresetExport(index);
+    updatePresetExport(index);
   };
 
   const [isLoading, setIsLoading] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const download = async () => {
     setIsLoading(true);
 
     // Add a short delay before calling downloadWallpaper()
     setTimeout(async () => {
-      await downloadWallpaper();
+      const result = await downloadWallpaper();
 
       setIsLoading(false);
-      setIsCompleted(true);
+      if (result.success) {
+        setIsCompleted(true);
 
-      setTimeout(() => {
-        setIsCompleted(false);
-      }, 500); // Duration for displaying the checkmark
+        setTimeout(() => {
+          setIsCompleted(false);
+        }, 500); // Duration for displaying the checkmark
+      } else {
+        setHasError(true);
+
+        setTimeout(() => {
+          setHasError(false);
+        }, 500); // Duration for displaying the X icon
+      }
     }, 200); // Delay before executing downloadWallpaper()
   };
 
@@ -72,9 +82,28 @@ export const ExportTab = ({
       );
     } else if (isCompleted) {
       return <CheckIcon />;
+    } else if (hasError) {
+      return <ClearIcon />;
     } else {
       return "Download";
     }
+  };
+
+  const updatePresetExport = (newPresetExport) => {
+    setPresetExport(newPresetExport);
+    localStorage.setItem("presetExport", JSON.stringify(newPresetExport));
+  };
+
+  const updateUserDimensions = (newUserDimensions) => {
+    setUserDimensions((prevState) => {
+      const updatedDimensions =
+        typeof newUserDimensions === "function"
+          ? newUserDimensions(prevState)
+          : newUserDimensions;
+
+      localStorage.setItem("userDimensions", JSON.stringify(updatedDimensions));
+      return updatedDimensions;
+    });
   };
 
   return (

@@ -44,3 +44,5 @@ Add meta tags **DONE**
 Push to github **DONE**
 Improve mobile download **DONE**
 Add loader + checkmark to download button **DONE**
+Negative spacing **DONE**
+Caching options to reappear on reload
